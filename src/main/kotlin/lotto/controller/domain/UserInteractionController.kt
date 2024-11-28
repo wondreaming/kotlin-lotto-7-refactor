@@ -17,4 +17,10 @@ class UserInteractionController(
     fun handlePurchaseLotto(myLotto: MyLotto) {
         outputView.showPurchaseLotto(myLotto)
     }
+
+    fun handleLottoNumbers(): String {
+        outputView.showLottoNumbers()
+        val lottoNumbers = inputView.getInput()
+        return lottoNumbers
+    }
 }
