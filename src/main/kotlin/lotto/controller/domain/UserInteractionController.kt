@@ -1,5 +1,6 @@
 package lotto.controller.domain
 
+import lotto.model.MyLotto
 import lotto.view.InputView
 import lotto.view.OutputView
 
@@ -11,5 +12,9 @@ class UserInteractionController(
         outputView.showStartMessage()
         val purchaseCost = inputView.getInput()
         return purchaseCost
+    }
+
+    fun handlePurchaseLotto(myLotto: MyLotto) {
+        outputView.showPurchaseLotto(myLotto)
     }
 }

@@ -11,11 +11,16 @@ class LottoController(
     fun run() {
         val purchaseCost = getPurchaseCost()
         val myLotto = MyLotto(purchaseCost)
+        showPurchaseLotto(myLotto)
     }
 
     private fun getPurchaseCost(): Int {
         val purchaseCost = userInteractionController.handlePurchaseCost()
         purchaseCostValidator(purchaseCost)
         return purchaseCost.toInt()
+    }
+
+    private fun showPurchaseLotto(myLotto: MyLotto) {
+        userInteractionController.handlePurchaseLotto(myLotto)
     }
 }
