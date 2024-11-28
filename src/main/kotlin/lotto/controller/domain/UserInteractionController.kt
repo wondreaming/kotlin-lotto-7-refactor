@@ -4,8 +4,8 @@ import lotto.view.InputView
 import lotto.view.OutputView
 
 class UserInteractionController(
-    val inputView: InputView = InputView(),
-    val outputView: OutputView = OutputView(),
+    private val inputView: InputView = InputView(),
+    private val outputView: OutputView = OutputView(),
 ) {
     fun handlePurchaseCost(): String {
         outputView.showStartMessage()
