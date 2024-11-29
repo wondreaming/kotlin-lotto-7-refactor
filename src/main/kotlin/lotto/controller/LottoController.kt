@@ -20,6 +20,7 @@ class LottoController(
         val winningNumbers = getLottoNumber()
         val bonusNumber = getBonusNumber(winningNumbers)
         myLotto.getWinner(winningNumbers, bonusNumber)
+        userInteractionController.handlePrize(myLotto)
     }
 
     private fun getPurchaseCost(): Int {

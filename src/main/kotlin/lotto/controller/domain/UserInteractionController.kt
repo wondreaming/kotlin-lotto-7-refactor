@@ -29,4 +29,8 @@ class UserInteractionController(
         val bonusNumber = inputView.getInput()
         return bonusNumber
     }
+
+    fun handlePrize(myLotto: MyLotto) {
+        outputView.showPrize(myLotto)
+    }
 }
