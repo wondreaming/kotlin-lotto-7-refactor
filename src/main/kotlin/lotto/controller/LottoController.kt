@@ -1,6 +1,7 @@
 package lotto.controller
 
 import lotto.controller.domain.UserInteractionController
+import lotto.controller.validator.BonusNumberValidator
 import lotto.controller.validator.PurchaseCostValidator
 import lotto.controller.validator.LottoNumbersValidator
 import lotto.model.Lotto
@@ -10,13 +11,14 @@ class LottoController(
     private val userInteractionController: UserInteractionController = UserInteractionController(),
     private val purchaseCostValidator: PurchaseCostValidator = PurchaseCostValidator(),
     private val lottoNumbersValidator: LottoNumbersValidator = LottoNumbersValidator(),
+    private val bonusNumberValidator: BonusNumberValidator = BonusNumberValidator(),
 ) {
     fun run() {
         val purchaseCost = getPurchaseCost()
         val myLotto = MyLotto(purchaseCost)
         showPurchaseLotto(myLotto)
         val winningNumbers = getLottoNumber()
-        val bonusNumber = getBonusNumber()
+        val bonusNumber = getBonusNumber(winningNumbers)
     }
 
     private fun getPurchaseCost(): Int {
@@ -36,8 +38,9 @@ class LottoController(
         return winningNumbers
     }
 
-    private fun getBonusNumber(): Int {
+    private fun getBonusNumber(winningNumbers: Lotto): Int {
         val bonusNumber = userInteractionController.handleBonusNumber()
+        bonusNumberValidator(bonusNumber, winningNumbers)
         return bonusNumber.toInt()
     }
 }
