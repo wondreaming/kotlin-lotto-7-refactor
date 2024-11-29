@@ -15,6 +15,12 @@ enum class WinnerType(
     NONE(0, 0);
 
     override fun toString(): String {
-        return "${matchingNumberCount}개 일치 (${NumberFormat.getNumberInstance(Locale.KOREA).format(prizeAmount)}원)"
+        return when (this) {
+            SECOND -> "${matchingNumberCount}개 일치, 보너스 볼 일치 (${
+                NumberFormat.getNumberInstance(Locale.KOREA).format(prizeAmount)
+            }원)"
+
+            else -> "${matchingNumberCount}개 일치 (${NumberFormat.getNumberInstance(Locale.KOREA).format(prizeAmount)}원)"
+        }
     }
 }

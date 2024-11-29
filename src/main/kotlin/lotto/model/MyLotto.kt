@@ -20,7 +20,7 @@ data class MyLotto(
     val rateOfReturn: String
         get() {
             val totalPrizeAmount = _winners.sumOf { it.prizeAmount }
-            val rate = totalPrizeAmount / purchaseCost.toDouble()
+            val rate = totalPrizeAmount / purchaseCost.toDouble() * 100
             return String.format("%.1f", rate)
         }
 

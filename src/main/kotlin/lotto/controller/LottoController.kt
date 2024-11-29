@@ -6,6 +6,7 @@ import lotto.controller.validator.PurchaseCostValidator
 import lotto.controller.validator.LottoNumbersValidator
 import lotto.model.Lotto
 import lotto.model.MyLotto
+import lotto.util.retryWhenNoException
 
 class LottoController(
     private val userInteractionController: UserInteractionController = UserInteractionController(),
@@ -24,8 +25,11 @@ class LottoController(
     }
 
     private fun getPurchaseCost(): Int {
-        val purchaseCost = userInteractionController.handlePurchaseCost()
-        purchaseCostValidator(purchaseCost)
+        val purchaseCost = retryWhenNoException {
+            val purchaseCost = userInteractionController.handlePurchaseCost()
+            purchaseCostValidator(purchaseCost)
+            purchaseCost
+        }
         return purchaseCost.toInt()
     }
 
@@ -34,15 +38,21 @@ class LottoController(
     }
 
     private fun getLottoNumber(): Lotto {
-        val lottoNumbers = userInteractionController.handleLottoNumbers()
-        lottoNumbersValidator(lottoNumbers)
-        val winningNumbers = Lotto(lottoNumbers.split(",").map { it.trim().toInt() })
+        val winningNumbers = retryWhenNoException {
+            val lottoNumbers = userInteractionController.handleLottoNumbers()
+            lottoNumbersValidator(lottoNumbers)
+            val winningNumbers = Lotto(lottoNumbers.split(",").map { it.trim().toInt() })
+            winningNumbers
+        }
         return winningNumbers
     }
 
     private fun getBonusNumber(winningNumbers: Lotto): Int {
-        val bonusNumber = userInteractionController.handleBonusNumber()
-        bonusNumberValidator(bonusNumber, winningNumbers)
+        val bonusNumber = retryWhenNoException {
+            val bonusNumber = userInteractionController.handleBonusNumber()
+            bonusNumberValidator(bonusNumber, winningNumbers)
+            bonusNumber
+        }
         return bonusNumber.toInt()
     }
 }
