@@ -19,6 +19,7 @@ class LottoController(
         showPurchaseLotto(myLotto)
         val winningNumbers = getLottoNumber()
         val bonusNumber = getBonusNumber(winningNumbers)
+        myLotto.getWinner(winningNumbers, bonusNumber)
     }
 
     private fun getPurchaseCost(): Int {
