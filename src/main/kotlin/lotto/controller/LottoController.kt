@@ -16,6 +16,7 @@ class LottoController(
         val myLotto = MyLotto(purchaseCost)
         showPurchaseLotto(myLotto)
         val winningNumbers = getLottoNumber()
+        val bonusNumber = getBonusNumber()
     }
 
     private fun getPurchaseCost(): Int {
@@ -33,5 +34,10 @@ class LottoController(
         lottoNumbersValidator(lottoNumbers)
         val winningNumbers = Lotto(lottoNumbers.split(",").map { it.trim().toInt() })
         return winningNumbers
+    }
+
+    private fun getBonusNumber(): Int {
+        val bonusNumber = userInteractionController.handleBonusNumber()
+        return bonusNumber.toInt()
     }
 }
