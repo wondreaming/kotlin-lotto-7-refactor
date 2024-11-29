@@ -17,11 +17,18 @@ data class MyLotto(
     val winners: List<WinnerType>
         get() = _winners
 
+    val rateOfReturn: String
+        get() {
+            val totalPrizeAmount = _winners.sumOf { it.prizeAmount }
+            val rate = totalPrizeAmount / purchaseCost.toDouble()
+            return String.format("%.1f", rate)
+        }
+
     init {
-        getLotto()
+        generateLottos()
     }
 
-    private fun getLotto() {
+    private fun generateLottos() {
         val randomNumbers = RandomNumbers()
         for (count in 1..lottoCount) {
             val nums = randomNumbers()
@@ -30,15 +37,15 @@ data class MyLotto(
     }
 
     fun getWinner(winningNumber: Lotto, bonusNumber: Int) {
-        for (lotto in _lottos) {
-            val difference = _lottos.minus(winningNumber)
-            val duplicationCount = _lottos.size - difference.size
-            val matchingBonusNumber = bonusNumber in lotto.winningNumbers
-            val winner = when (duplicationCount) {
-                6 -> WinnerType.FIRST
-                5 -> if (matchingBonusNumber) WinnerType.SECOND else WinnerType.THIRD
-                4 -> WinnerType.FOURTH
-                3 -> WinnerType.FIFTH
+        _lottos.forEach { lotto ->
+            val matchCount = lotto.winningNumbers.intersect(winningNumber.winningNumbers).size
+            val hasBonus = bonusNumber in lotto.winningNumbers
+            val winner = when {
+                matchCount == 6 -> WinnerType.FIRST
+                matchCount == 5 && hasBonus -> WinnerType.SECOND
+                matchCount == 5 -> WinnerType.THIRD
+                matchCount == 4 -> WinnerType.FOURTH
+                matchCount == 3 -> WinnerType.FIFTH
                 else -> WinnerType.NONE
             }
             _winners.add(winner)
